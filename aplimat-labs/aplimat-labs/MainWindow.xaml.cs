@@ -1,4 +1,5 @@
-﻿using SharpGL;
+﻿using aplimat_labs.Utilities;
+using SharpGL;
 using SharpGL.SceneGraph.Primitives;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,12 @@ namespace aplimat_labs
         public MainWindow()
         {
             InitializeComponent();
+
+            //while (true) Console.WriteLine(rng.Generate());
         }
 
+        private CubeMesh myCube = new CubeMesh();
+        private Randomizer rng = new Randomizer(-1, 1);
         private void OpenGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
             OpenGL gl = args.OpenGL;
@@ -36,18 +41,12 @@ namespace aplimat_labs
 
             // Move Left And Into The Screen
             gl.LoadIdentity();
-            gl.Translate(0.0f, 0.0f, -6.0f);
+            gl.Translate(0.0f, 0.0f, -40.0f);
 
 
-            gl.Rotate(rotation, 0.0f, 1.0f, 0.0f);
-
-            Teapot tp = new Teapot();
-            tp.Draw(gl, 14, 1, OpenGL.GL_FILL);
-
-            rotation += 3.0f;
+            myCube.Position += new Vector3(rng.GenerateInt(), rng.GenerateInt(), rng.GenerateInt());
+            myCube.Draw(gl);
         }
-
-        float rotation = 0;
 
         private void OpenGLControl_OpenGLInitialized(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
