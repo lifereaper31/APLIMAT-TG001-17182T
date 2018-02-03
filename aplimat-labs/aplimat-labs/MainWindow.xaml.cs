@@ -1,4 +1,5 @@
-﻿using SharpGL;
+﻿using aplimat_labs.Utilities;
+using SharpGL;
 using SharpGL.SceneGraph.Primitives;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,7 @@ using System.Windows.Shapes;
 namespace aplimat_labs
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    /// Interaction logic for MainWindow.xaml/// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -27,6 +27,12 @@ namespace aplimat_labs
             InitializeComponent();
         }
 
+        private List<CubeMesh> myCubes = new List<CubeMesh>();
+        private Randomizer colp = new Randomizer(-20, 20);
+        private Randomizer colr = new Randomizer(0f, 1f);
+
+        private List<CubeMesh> myCubes1 = new List<CubeMesh>();
+        private List<CubeMesh> myCubes2 = new List<CubeMesh>();
         private void OpenGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
             OpenGL gl = args.OpenGL;
@@ -36,18 +42,35 @@ namespace aplimat_labs
 
             // Move Left And Into The Screen
             gl.LoadIdentity();
-            gl.Translate(0.0f, 0.0f, -6.0f);
+
+            gl.Translate(0.0f, 0.0f, -100.0f);
+
+            CubeMesh myCube = new CubeMesh();
+            myCube.Position = new Vector3(Gaussian.Generate(0, 15), colp.GenerateInt(), 0);
 
 
-            gl.Rotate(rotation, 0.0f, 1.0f, 0.0f);
 
-            Teapot tp = new Teapot();
-            tp.Draw(gl, 14, 1, OpenGL.GL_FILL);
+            myCubes.Add(myCube);
 
-            rotation += 3.0f;
+            foreach (var cube in myCubes)
+            {
+                cube.Draw(gl);
+                gl.Color(colr.GenerateDouble(), colr.GenerateDouble(), colr.GenerateDouble());
+            }
+
+
+
+
+
+            //gl.Rotate(rotation, 0.0f, 1.0f, 0.0f);
+
+            //Teapot tp = new Teapot();
+            //tp.Draw(gl, 14, 1, OpenGL.GL_FILL);
+
+            //rotation += 3.0f;
         }
 
-        float rotation = 0;
+        //float rotation = 0;
 
         private void OpenGLControl_OpenGLInitialized(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
@@ -70,8 +93,9 @@ namespace aplimat_labs
             gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, light0diffuse);
             gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPECULAR, light0specular);
             gl.Enable(OpenGL.GL_LIGHTING);
-            gl.Enable(OpenGL.GL_LIGHT0);
-
+            gl.Enable(OpenGL.GL_LIGHT0);        
+            gl.Disable(OpenGL.GL_LIGHTING);
+            gl.Disable(OpenGL.GL_LIGHT0);
             gl.ShadeModel(OpenGL.GL_SMOOTH);
         }
     }
