@@ -30,7 +30,8 @@ namespace aplimat_labs
         private List<CubeMesh> myCubes = new List<CubeMesh>();
         private Randomizer colp = new Randomizer(-20, 20);
         private Randomizer colr = new Randomizer(0f, 1f);
-
+        private Vector3 velocity = new Vector3(1, 0, 0);
+       private  CubeMesh myCube = new CubeMesh();
         private List<CubeMesh> myCubes1 = new List<CubeMesh>();
         private List<CubeMesh> myCubes2 = new List<CubeMesh>();
         private void OpenGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
@@ -45,18 +46,47 @@ namespace aplimat_labs
 
             gl.Translate(0.0f, 0.0f, -100.0f);
 
-            CubeMesh myCube = new CubeMesh();
-            myCube.Position = new Vector3(Gaussian.Generate(0, 15), colp.GenerateInt(), 0);
+           
+          // myCube.Position = new Vector3(Gaussian.Generate(0, 15), colp.GenerateInt(), 0);
 
 
 
             myCubes.Add(myCube);
 
-            foreach (var cube in myCubes)
+            myCube.Draw(gl);
+            myCube.Position += velocity;
+
+
+            if (myCube.Position.x >= 30.0f)
             {
-                cube.Draw(gl);
-                gl.Color(colr.GenerateDouble(), colr.GenerateDouble(), colr.GenerateDouble());
+                velocity.x = -1;
+
             }
+            if (myCube.Position.x <= -30.0f)
+            {
+                velocity.x = -1;
+                
+
+
+            }
+            if (myCube.Position.y <= 25.0f)
+            {
+                velocity.y = 1;
+            }
+            if (myCube.Position.y >= -25.0f)
+            {
+                velocity.y = -1;
+                
+
+            }
+
+
+
+            //foreach (var cube in myCubes)
+            //{
+            //    cube.Draw(gl);
+            //    gl.Color(colr.GenerateDouble(), colr.GenerateDouble(), colr.GenerateDouble());
+            //}
 
 
 
