@@ -44,5 +44,9 @@ namespace aplimat_labs
                 rhs.y - lhs.y,
                 rhs.z - lhs.z);
         }
+        public float GetMagnitude()
+        {
+            return (float)Math.Sqrt((x * x) + (y * y) + (z + z));
+        }
     }
 }
