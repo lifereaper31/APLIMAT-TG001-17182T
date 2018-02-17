@@ -31,6 +31,8 @@ namespace aplimat_labs
             z = (float)_z;
         }
 
+
+
         public static Vector3 operator +(Vector3 rhs, Vector3 lhs) //rhs = right hand side 
         {
             return new Vector3(rhs.x + lhs.x,
@@ -44,9 +46,35 @@ namespace aplimat_labs
                 rhs.y - lhs.y,
                 rhs.z - lhs.z);
         }
-        public float GetMagnitude()
+        public static Vector3 operator *(Vector3 left, float scalar)
+        {
+            return new Vector3(left.x * scalar,
+                left.y = scalar,
+                left.z = scalar);
+        }
+
+        public static Vector3 operator /(Vector3 left, float scalar)
+        {
+            return new Vector3(left.x / scalar,
+                left.y / scalar,
+                left.z / scalar);
+        }
+
+        public float getMagnitude()
         {
             return (float)Math.Sqrt((x * x) + (y * y) + (z + z));
         }
+
+        public Vector3 Normalize()
+        {
+            float length = getMagnitude();
+            if (this.x != 0) this.x /= length;
+            if (this.y != 0) this.y /= length;
+            if (this.z != 0) this.z /= length;
+
+            return new Vector3(x, y, z);
+        }
+
     }
+
 }
