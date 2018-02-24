@@ -26,34 +26,30 @@ namespace aplimat_labs
         public MainWindow()
         {
             InitializeComponent();
-
-            myVector = a - b;
-            Console.WriteLine(myVector.getMagnitude());
-
-            
         }
 
+        private CubeMesh lightCube = new CubeMesh()
+        {
+            Position = new Vector3(-35, 8, 0),
+            mass = 8
+        };
 
-        private Vector3 mousePos = new Vector3(0, 0, 0);  
+        private CubeMesh heavyCube = new CubeMesh()
+        {
+            Position = new Vector3(5, -5, 0),
+            mass = 5
+        };
 
+        private CubeMesh moderateCube = new CubeMesh()
+        {
+            Position = new Vector3(3, 3, 0),
+            mass = 3
+        };
 
-        private Randomizer rng = new Randomizer(-1, 1);
+        int rightWall = -30;
 
-        private List<CubeMesh> myCubes = new List<CubeMesh>();
-
-        private Randomizer random1 = new Randomizer(-20, 20); 
-        private Randomizer random2 = new Randomizer(0f, 1f); 
-
-        private Vector3 myVector = new Vector3();
-        private Vector3 a = new Vector3(3, 5, 0);
-        private Vector3 b = new Vector3(-7, -6, 0);
-
-        private CubeMesh mover = new CubeMesh(-25, 0, 0);
-        private Vector3 acceleration = new Vector3(0.01f, 0, 0);
-        private Vector3 decelaration = new Vector3(-0.01f, 0, 0);
-
-        private bool hit = true;
-
+        public Vector3 wind = new Vector3(0.001f, 0, 0);
+        public Vector3 gravity = new Vector3(0.0f, -0.001, 0);
 
         private void OpenGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
@@ -64,24 +60,56 @@ namespace aplimat_labs
 
             // Move Left And Into The Screen
             gl.LoadIdentity();
-            gl.Translate(0.0f, 0.0f, -40.0f);
+            gl.Translate(0.0f, 0.0f, -80.0f);
 
-            mover.Draw(gl);
-            mover.Velocity += acceleration;
+            lightCube.Draw(gl);
+            gl.Color(1.0f, 0.0f, 0.0f);
+            lightCube.ApplyForce(wind);
 
-            if (mover.Position.x >= 25.0f)
+            if (lightCube.Position.x >= rightWall) lightCube.ApplyForce(gravity);
+            if (lightCube.Position.y >= rightWall) lightCube.ApplyForce(wind);
+            //bounce up
+            if (lightCube.Position.y <= rightWall)
             {
-                mover.Velocity += acceleration;
-                mover.Position.x = 0;
+                lightCube.Velocity.y -= lightCube.Velocity.y * 2;
+            }
+            //bounce right
+            if (lightCube.Position.x >= 15 && lightCube.Position.x >= 20)
+            {
+                lightCube.Velocity.x -= lightCube.Velocity.x * 2;
             }
 
-         
+            heavyCube.Draw(gl);
+            gl.Color(0.0f, 1.0f, 0.0f);
+            heavyCube.ApplyForce(wind);
+            if (heavyCube.Position.x >= rightWall) heavyCube.ApplyForce(gravity);
+            if (heavyCube.Position.y >= rightWall) lightCube.ApplyForce(wind);
+            //bounce up
+            if (heavyCube.Position.y <= rightWall)
+            {
+                heavyCube.Velocity.y -= heavyCube.Velocity.y * 2;
+            }
+            //bounce right
+            if (heavyCube.Position.x >= 15)
+            {
+                heavyCube.Velocity.x -= heavyCube.Velocity.x * 2;
+            }
 
-
-
-
-            gl.DrawText(20, 20, 1, 0, 0, "Arial", 25, mover.Velocity.x + "");
-           
+            moderateCube.Draw(gl);
+            gl.Color(0.0f, 0.0f, 1.0f);
+            moderateCube.ApplyForce(wind);
+            if (moderateCube.Position.x >= rightWall) moderateCube.ApplyForce(gravity);
+            if (moderateCube.Position.y >= rightWall) lightCube.ApplyForce(wind);
+            //bounce up
+            if (moderateCube.Position.y <= rightWall)
+            {
+                moderateCube.Velocity.y -= moderateCube.Velocity.y * 2;
+            }
+            //bounce right
+            if (moderateCube.Position.x >= 15)
+            {
+                moderateCube.Velocity.x -= moderateCube.Velocity.x * 2;
+            }
         }
 
 
@@ -109,30 +137,11 @@ namespace aplimat_labs
             gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPECULAR, light0specular);
             gl.Enable(OpenGL.GL_LIGHTING);
             gl.Enable(OpenGL.GL_LIGHT0);
-            gl.Color(1.0f, 0.0f, 0.0f);
+            gl.Color(1.0f, 1.0f, 0.0f);
             gl.Disable(OpenGL.GL_LIGHTING);
             gl.Disable(OpenGL.GL_LIGHT0);
             gl.ShadeModel(OpenGL.GL_SMOOTH);
         }
 
-        private void OpenGLControl_MouseMove(object sender, MouseEventArgs e)
-        {
-            mousePos = new Vector3(e.GetPosition(this).X,
-                                   e.GetPosition(this).Y, 0);
-
-            var pos = e.GetPosition(this);
-
-            mousePos.x = (float)mousePos.x - (float)Width / 2.0f;
-            mousePos.y = (float)mousePos.y - (float)Height / 2.0f;
-
-            mousePos.y = -mousePos.y;
-
-            Console.WriteLine("mouse x: " + mousePos.x + "mouse y: " + mousePos.y);
-        }
-
-        private void OpenGLControl_MouseMove_1(object sender, MouseEventArgs e)
-        {
-
-        }
     }
 }

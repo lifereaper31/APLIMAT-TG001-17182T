@@ -46,11 +46,14 @@ namespace aplimat_labs
                 rhs.y - lhs.y,
                 rhs.z - lhs.z);
         }
+
+        
+
         public static Vector3 operator *(Vector3 left, float scalar)
         {
             return new Vector3(left.x * scalar,
-                left.y = scalar,
-                left.z = scalar);
+                left.y * scalar,
+                left.z * scalar);
         }
 
         public static Vector3 operator /(Vector3 left, float scalar)
@@ -74,7 +77,20 @@ namespace aplimat_labs
 
             return new Vector3(x, y, z);
         }
+        public void Clamp(float limit)
+        {
+            if (this.x >= limit) this.x = limit;
+            if (this.y >= limit) this.y = limit;
+            if (this.z >= limit) this.z = limit;
+        }
 
+        //public void Clamp(float limit)
+        //{
+        //    if (this.x >= limit.x) this.x = limit.x;
+        //    if (this.y >= limit.y) this.y = limit.y;
+        //    if (this.z >= limit.z) this.z = limit.z;
+        //}
     }
+ 
 
 }

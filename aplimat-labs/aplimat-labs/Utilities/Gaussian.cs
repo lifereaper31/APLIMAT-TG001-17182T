@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace aplimat_labs.Utilities
 {
     public static class Gaussian

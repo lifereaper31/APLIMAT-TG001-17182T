@@ -17,7 +17,6 @@ namespace aplimat_labs.Utilities
             this.max = _max + 1; //add one because
             this.random = new Random();
         }
-        
 
         public double GenerateDouble()
         {
@@ -28,6 +27,10 @@ namespace aplimat_labs.Utilities
         {
             return (int)random.Next((int)min, (int)max);
         }
-        
+
+        internal byte Next(int v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
